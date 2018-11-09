@@ -1,0 +1,152 @@
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
+import rospy
+import numpy as np
+import sys
+import socket
+import os
+import time
+import threading
+import traceback
+
+from datetime import datetime
+
+import tf
+from nav_msgs.msg import Odometry
+from std_msgs.msg import Float32MultiArray, MultiArrayLayout
+from ros_uav_estimate.msg import ros_uav
+
+class OBSClient():
+    def __init__(self, addr, port):
+        self.pub = rospy.Publisher('rtkrcv_ant', ros_uav, queue_size=1)
+        self.soc_1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.soc_1.settimeout(0.1)
+        self.soc_1.connect((addr, port[0]))
+        self.soc_2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.soc_2.settimeout(0.1)
+        self.soc_2.connect((addr, port[1]))
+        self.soc_3 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.soc_3.settimeout(0.1)
+        self.soc_3.connect((addr, port[2]))
+        self.soc_4 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.soc_4.settimeout(0.1)
+        self.soc_4.connect((addr, port[3]))
+        self.soc_5 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.soc_5.settimeout(0.1)
+        self.soc_5.connect((addr, port[4]))
+        self.soc_6 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.soc_6.settimeout(0.1)
+        self.soc_6.connect((addr, port[5]))
+        self.stop_event=threading.Event()
+        self.thread=threading.Thread(target=self.target)
+        self.thread.start()
+
+    #data = [GPST, GPST, e-baseline(m), n-baseline(m), u-baseline(m), Q, ....]
+    #enu = [GPST, e-baseline(m), n-baseline(m), u-baseline(m), Q]
+    def target(self):
+        while not self.stop_event.is_set():
+            enu_1 = self.data_split(self.soc_1)
+	    enu_2 = self.data_split(self.soc_2)
+	    enu_3 = self.data_split(self.soc_3)
+	    enu_4 = self.data_split(self.soc_4)
+    	    enu_5 = self.data_split(self.soc_5)
+	    enu_6 = self.data_split(self.soc_6)
+	    print(np.r_[enu_1, enu_2, enu_3, enu_4, enu_5, enu_6])
+
+	    uav_ant = ros_uav()
+            uav_ant.header.stamp = rospy.Time.now()
+
+            uav_ant.ant1.gps_w = enu_1[0]
+            uav_ant.ant1.gps_sec = enu_1[1]
+            uav_ant.ant1.e = enu_1[2]
+            uav_ant.ant1.n = enu_1[3]
+            uav_ant.ant1.u = enu_1[4]
+            uav_ant.ant1.stat = enu_1[5]
+
+            uav_ant.ant2.gps_w = enu_2[0]
+            uav_ant.ant2.gps_sec = enu_2[1]
+            uav_ant.ant2.e = enu_2[2]
+            uav_ant.ant2.n = enu_2[3]
+            uav_ant.ant2.u = enu_2[4]
+            uav_ant.ant2.stat = enu_2[5]
+
+            uav_ant.ant3.gps_w = enu_3[0]
+            uav_ant.ant3.gps_sec = enu_3[1]
+            uav_ant.ant3.e = enu_3[2]
+            uav_ant.ant3.n = enu_3[3]
+            uav_ant.ant3.u = enu_3[4]
+            uav_ant.ant3.stat = enu_3[5]
+
+            uav_ant.ant4.gps_w = enu_4[0]
+            uav_ant.ant4.gps_sec = enu_4[1]
+            uav_ant.ant4.e = enu_4[2]
+            uav_ant.ant4.n = enu_4[3]
+            uav_ant.ant4.u = enu_4[4]
+            uav_ant.ant4.stat = enu_4[5]
+
+            uav_ant.ant5.gps_w = enu_5[0]
+            uav_ant.ant5.gps_sec = enu_5[1]
+            uav_ant.ant5.e = enu_5[2]
+            uav_ant.ant5.n = enu_5[3]
+            uav_ant.ant5.u = enu_5[4]
+            uav_ant.ant5.stat = enu_5[5]
+
+            uav_ant.ant6.gps_w = enu_6[0]
+            uav_ant.ant6.gps_sec = enu_6[1]
+            uav_ant.ant6.e = enu_6[2]
+            uav_ant.ant6.n = enu_6[3]
+            uav_ant.ant6.u = enu_6[4]
+            uav_ant.ant6.stat = enu_6[5]
+            
+	    self.pub.publish(uav_ant)    #rtkrcv publish
+
+    def data_split(self, soc):
+		try:
+		    soc_file = soc.makefile()
+		    line = soc_file.readline()
+		    data = line.split()
+		    enu = list(map(float, data[0:6]))
+		except:
+		    enu = [0, 0, 0, 0, 0, 0]
+		return enu
+
+    def stop(self):
+        self.stop_event.set()
+
+    def close(self):
+        self.thread.join()
+        self.soc.close()
+
+class rtkrcv_bypass():
+    def __init__(self):
+        self.addr = 'localhost'
+        self.port = [2103, 2104, 2105, 2106, 2107, 2108]
+
+    def mainloop(self):
+        while not rospy.is_shutdown():
+            try:
+                cli = OBSClient(self.addr, self.port)
+                rate = rospy.Rate(10)
+                while not rospy.is_shutdown():
+                    rate.sleep()
+
+            except rospy.ROSInterruptException:
+                continue
+
+            except:
+                time.sleep(5.0)
+                traceback.print_exc()
+                continue
+
+            finally:
+                try:
+                    cli.stop()
+                    cli.close()
+
+                except:
+                    pass
+
+if __name__ == '__main__':
+    rospy.init_node('bypass_node')
+    node = rtkrcv_bypass()
+    node.mainloop()

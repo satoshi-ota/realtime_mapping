@@ -1,0 +1,260 @@
+<?xml version="1.0"?>
+<robot name="my_robot">
+  <link name="uav">
+   <visual>
+     <geometry>
+       <cylinder radius="0.25" length="0.30" />
+     </geometry>
+     <material name="black">
+       <color rgba="0 0 0 2.0"/>
+     </material>
+   </visual>
+  </link>
+
+  <link name="uav_ant1">
+   <visual>
+     <geometry>
+       <cylinder radius="0.05" length="0.5" />
+     </geometry>
+     <material name="black">
+       <color rgba="0 0 0 2.0"/>
+     </material>
+   </visual>
+  </link>
+  <link name="uav_ant2">
+   <visual>
+     <geometry>
+       <cylinder radius="0.05" length="0.5" />
+     </geometry>
+     <material name="black">
+       <color rgba="0 0 0 2.0"/>
+     </material>
+   </visual>
+  </link>
+  <link name="uav_ant3">
+   <visual>
+     <geometry>
+       <cylinder radius="0.05" length="0.5" />
+     </geometry>
+     <material name="black">
+       <color rgba="0 0 0 2.0"/>
+     </material>
+   </visual>
+  </link>
+  <link name="uav_ant4">
+   <visual>
+     <geometry>
+       <cylinder radius="0.05" length="0.5" />
+     </geometry>
+     <material name="black">
+       <color rgba="0 0 0 2.0"/>
+     </material>
+   </visual>
+  </link>
+  <link name="uav_ant5">
+   <visual>
+     <geometry>
+       <cylinder radius="0.05" length="0.5" />
+     </geometry>
+     <material name="black">
+       <color rgba="0 0 0 2.0"/>
+     </material>
+   </visual>
+  </link>
+  <link name="uav_ant6">
+   <visual>
+     <geometry>
+       <cylinder radius="0.05" length="0.5" />
+     </geometry>
+     <material name="black">
+       <color rgba="0 0 0 2.0"/>
+     </material>
+   </visual>
+  </link>
+
+  <link name="uav_rotor1">
+    <visual>
+      <geometry>
+        <cylinder radius="0.3" length="0.02" />
+      </geometry>
+      <material name="white">
+        <color rgba="1.0 1.0 1.0 0.5"/>
+      </material>
+    </visual>
+  </link>
+  <link name="uav_rotor2">
+    <visual>
+      <geometry>
+        <cylinder radius="0.3" length="0.02" />
+      </geometry>
+      <material name="white">
+        <color rgba="1.0 1.0 1.0 0.5"/>
+      </material>
+    </visual>
+  </link>
+  <link name="uav_rotor3">
+    <visual>
+      <geometry>
+        <cylinder radius="0.3" length="0.02" />
+      </geometry>
+      <material name="white">
+        <color rgba="1.0 1.0 1.0 0.5"/>
+      </material>
+    </visual>
+  </link>
+  <link name="uav_rotor4">
+    <visual>
+      <geometry>
+        <cylinder radius="0.3" length="0.02" />
+      </geometry>
+      <material name="white">
+        <color rgba="1.0 1.0 1.0 0.5"/>
+      </material>
+    </visual>
+  </link>
+  <link name="uav_rotor5">
+    <visual>
+      <geometry>
+        <cylinder radius="0.3" length="0.02" />
+      </geometry>
+      <material name="white">
+        <color rgba="1.0 1.0 1.0 0.5"/>
+      </material>
+    </visual>
+  </link>
+  <link name="uav_rotor6">
+    <visual>
+      <geometry>
+        <cylinder radius="0.3" length="0.02" />
+      </geometry>
+      <material name="white">
+        <color rgba="1.0 1.0 1.0 0.5"/>
+      </material>
+    </visual>
+  </link>
+
+  <link name="uav_rod1">
+   <visual>
+     <geometry>
+       <cylinder radius="0.05" length="3.2" />
+     </geometry>
+     <material name="black">
+       <color rgba="0 0 0 2.0"/>
+     </material>
+   </visual>
+  </link>
+  <link name="uav_rod2">
+   <visual>
+     <geometry>
+       <cylinder radius="0.05" length="3.2" />
+     </geometry>
+     <material name="black">
+       <color rgba="0 0 0 2.0"/>
+     </material>
+   </visual>
+  </link>
+  <link name="uav_rod3">
+   <visual>
+     <geometry>
+       <cylinder radius="0.05" length="3.2" />
+     </geometry>
+     <material name="black">
+       <color rgba="0 0 0 2.0"/>
+     </material>
+   </visual>
+  </link>
+
+  <joint name="uav_rod1" type="fixed">
+    <parent link="uav"/>
+    <child link="uav_rod1"/>
+    <origin rpy="1.57 1.57 0" xyz="0 0 -0.25"/>
+    <axis xyz="0 0 0"/>
+  </joint>
+  <joint name="uav_rod2" type="fixed">
+    <parent link="uav"/>
+    <child link="uav_rod2"/>
+    <origin rpy="2.617 1.57 0" xyz="0 0 -0.25"/>
+    <axis xyz="0 0 0"/>
+  </joint>
+  <joint name="uav_rod3" type="fixed">
+    <parent link="uav"/>
+    <child link="uav_rod3"/>
+    <origin rpy="3.664 1.57 0" xyz="0 0 -0.25"/>
+    <axis xyz="0 0 0"/>
+  </joint>
+
+  <joint name="uav_ant1" type="fixed">
+    <parent link="uav"/>
+    <child link="uav_ant1"/>
+    <origin rpy="0 0 0" xyz="1.385 0.8 0"/>
+    <axis xyz="0 0 0"/>
+  </joint>
+  <joint name="uav_ant2" type="fixed">
+    <parent link="uav"/>
+    <child link="uav_ant2"/>
+    <origin rpy="0 0 0" xyz="1.385 -0.8 0"/>
+    <axis xyz="0 0 0"/>
+  </joint>
+  <joint name="uav_ant3" type="fixed">
+    <parent link="uav"/>
+    <child link="uav_ant3"/>
+    <origin rpy="0 0 0" xyz="-1.385 0.8 0"/>
+    <axis xyz="0 0 0"/>
+  </joint>
+  <joint name="uav_ant4" type="fixed">
+    <parent link="uav"/>
+    <child link="uav_ant4"/>
+    <origin rpy="0 0 0" xyz="-1.385 -0.8 0"/>
+    <axis xyz="0 0 0"/>
+  </joint>
+  <joint name="uav_ant5" type="fixed">
+    <parent link="uav"/>
+    <child link="uav_ant5"/>
+    <origin rpy="0 0 0" xyz="0 1.6 0"/>
+    <axis xyz="0 0 0"/>
+  </joint>
+  <joint name="uav_ant6" type="fixed">
+    <parent link="uav"/>
+    <child link="uav_ant6"/>
+    <origin rpy="0 0 0" xyz="0 -1.6 0"/>
+    <axis xyz="0 0 0"/>
+  </joint>
+
+  <joint name="uav_rotor1" type="fixed">
+    <parent link="uav"/>
+    <child link="uav_rotor1"/>
+    <origin rpy="0 0 0" xyz="1 0 0"/>
+    <axis xyz="0 0 0"/>
+  </joint>
+  <joint name="uav_rotor2" type="fixed">
+    <parent link="uav"/>
+    <child link="uav_rotor2"/>
+    <origin rpy="0 0 0" xyz="-1 0 0"/>
+    <axis xyz="0 0 0"/>
+  </joint>
+  <joint name="uav_rotor3" type="fixed">
+    <parent link="uav"/>
+    <child link="uav_rotor3"/>
+    <origin rpy="0 0 0" xyz="0.5 0.866 0"/>
+    <axis xyz="0 0 0"/>
+  </joint>
+  <joint name="uav_rotor4" type="fixed">
+    <parent link="uav"/>
+    <child link="uav_rotor4"/>
+    <origin rpy="0 0 0" xyz="0.5 -0.866 0"/>
+    <axis xyz="0 0 0"/>
+  </joint>
+  <joint name="uav_rotor5" type="fixed">
+    <parent link="uav"/>
+    <child link="uav_rotor5"/>
+    <origin rpy="0 0 0" xyz="-0.5 0.866 0"/>
+    <axis xyz="0 0 0"/>
+  </joint>
+  <joint name="uav_rotor6" type="fixed">
+    <parent link="uav"/>
+    <child link="uav_rotor6"/>
+    <origin rpy="0 0 0" xyz="-0.5 -0.866 0"/>
+    <axis xyz="0 0 0"/>
+  </joint>
+
+</robot>

@@ -1,0 +1,38 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+import rospy
+from sensor_msgs.msg import PointCloud2
+import sensor_msgs.point_cloud2 as pc2
+import math
+import numpy as np
+from std_msgs.msg import Header
+
+class Convert_stamp(object):
+    def __init__(self):
+        rospy.init_node('stamp_convert_node')
+        rospy.Subscriber('velodyne_points', PointCloud2, self.callback_1)
+        rospy.Subscriber('gps_time', Header, self.callback_2)
+        self.pub = rospy.Publisher('gps_stamp_points', PointCloud2, queue_size=1)
+        self.pc2_fields = np.zeros(6)
+        self.output_pc2 = PointCloud2()
+        rospy.spin()
+
+    def callback_1(self, input_pc2):
+        for fields in pc2.read_points(input_pc2, field_names = ("x", "y", "z", "intensity", "ring", "time")):
+            self.pc2_fields = np.array(fields)
+            #rospy.logwarn("gpst: %f" % (self.pc2_fields[5]))
+            break
+        self.output_pc2 = input_pc2
+
+    def callback_2(self, gps_time):
+        self.output_pc2.header.stamp = rospy.Time.from_sec(gps_time.stamp.secs - gps_time.stamp.secs%3600 + self.pc2_fields[5]/10**6)
+        self.pub.publish(self.output_pc2)
+
+def main():
+    try:
+        Convert_stamp()
+    except rospy.ROSInterruptException:
+        pass
+
+if __name__ == '__main__':
+    main()

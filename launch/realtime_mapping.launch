@@ -1,0 +1,12 @@
+<launch>
+  <arg name="calibration" default="$(find velodyne_pointcloud)/params/VLP16db.yaml"/>
+  <arg name="model" default="$(find realtime_mapping)/model/robot.urdf"/>
+  <param name="robot_description" textfile="$(arg model)" />
+  <node pkg="realtime_mapping" name="odom_publisher_node" type="odom_publisher_node" />
+  <node pkg="velodyne_pointcloud" name="cloud_node" type="cloud_node" />
+  <node pkg="realtime_mapping" name="stamp_convert_node" type="stamp_convert_node" />
+  <node pkg="realtime_mapping" name="pc2_transform_node" type="pc2_transform_node" />
+  <node pkg="joint_state_publisher" name="joint_state_publisher" type="joint_state_publisher" />
+  <node pkg="robot_state_publisher" name="robot_state_publisher" type="state_publisher" />
+  <node pkg="rviz" type="rviz" name="rviz"/>
+</launch>
